@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2018 the Urho3D project.
+# Copyright (c) 2008-2020 the Urho3D project.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ if (CMAKE_PROJECT_NAME STREQUAL Urho3D)
     set_output_directories (${CMAKE_BINARY_DIR}/bin/tool/clang RUNTIME PDB)
 else ()
     # Set CMake minimum version and CMake policy required by UrhoCommon module
-    cmake_minimum_required (VERSION 3.2.3)
+    cmake_minimum_required (VERSION 3.10.2)
     if (COMMAND cmake_policy)
         # Libraries linked via full path no longer produce linker search paths
         cmake_policy (SET CMP0003 NEW)
@@ -55,7 +55,7 @@ else ()
     file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${DEST_INCLUDE_DIR}/ThirdParty)
 endif ()
 
-# LLVM/Clang is assumed to be installed in a system-wide location when not explicitily defined using env-var
+# LLVM/Clang is assumed to be installed in a system-wide location when not explicitly defined using env-var
 if (DEFINED ENV{LLVM_CLANG_ROOT})
     set (CMAKE_SYSROOT $ENV{LLVM_CLANG_ROOT})
 endif ()

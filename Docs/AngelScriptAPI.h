@@ -922,6 +922,7 @@ void SetAttributeAnimationSpeed(const String&, float);
 void SetAttributeAnimationTime(const String&, float);
 void SetAttributeAnimationWrapMode(const String&, WrapMode);
 void SetDeepEnabled(bool);
+void SetDisabledOffset(int, int);
 void SetEnabledRecursive(bool);
 void SetFixedHeight(int);
 void SetFixedSize(int, int);
@@ -973,6 +974,7 @@ IntRect combinedScreenRect;
 XMLFile defaultStyle;
 /* readonly */
 float derivedOpacity;
+IntVector2 disabledOffset;
 /* readonly */
 uint dragButtonCombo;
 /* readonly */
@@ -1008,6 +1010,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -1279,6 +1282,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -1538,6 +1542,7 @@ void SetAttributeAnimationTime(const String&, float);
 void SetAttributeAnimationWrapMode(const String&, WrapMode);
 void SetCheckedOffset(int, int);
 void SetDeepEnabled(bool);
+void SetDisabledOffset(int, int);
 void SetEnabledRecursive(bool);
 void SetFixedHeight(int);
 void SetFixedSize(int, int);
@@ -1591,6 +1596,7 @@ IntRect combinedScreenRect;
 XMLFile defaultStyle;
 /* readonly */
 float derivedOpacity;
+IntVector2 disabledOffset;
 /* readonly */
 uint dragButtonCombo;
 /* readonly */
@@ -1626,6 +1632,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -2454,14 +2461,14 @@ String downloadName;
 float downloadProgress;
 VariantMap identity;
 /* readonly */
-float lastHeardTime;
+uint lastHeardTime;
 bool logStatistics;
 /* readonly */
 uint numDownloads;
 /* readonly */
-float packetsInPerSec;
+int packetsInPerSec;
 /* readonly */
-float packetsOutPerSec;
+int packetsOutPerSec;
 /* readonly */
 uint16 port;
 Vector3 position;
@@ -3866,6 +3873,7 @@ void SetAttributeAnimationSpeed(const String&, float);
 void SetAttributeAnimationTime(const String&, float);
 void SetAttributeAnimationWrapMode(const String&, WrapMode);
 void SetDeepEnabled(bool);
+void SetDisabledOffset(int, int);
 void SetEnabledRecursive(bool);
 void SetFixedHeight(int);
 void SetFixedSize(int, int);
@@ -3919,6 +3927,7 @@ IntRect combinedScreenRect;
 XMLFile defaultStyle;
 /* readonly */
 float derivedOpacity;
+IntVector2 disabledOffset;
 /* readonly */
 uint dragButtonCombo;
 /* readonly */
@@ -3954,6 +3963,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -4875,6 +4885,7 @@ LayoutMode layoutMode;
 int layoutSpacing;
 /* readonly */
 ListView listView;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -4971,7 +4982,7 @@ float GetDistanceToWall(const Vector3&, float, const Vector3& = Vector3 ( 1.0 , 
 bool GetInterceptNetworkUpdate(const String&) const;
 Vector3 GetRandomPoint();
 Vector3 GetRandomPointInCircle(const Vector3&, float, const Vector3& = Vector3 ( 1.0 , 1.0 , 1.0 ));
-BoundingBox GetTileBoudningBox(const IntVector2&) const;
+BoundingBox GetTileBoundingBox(const IntVector2&) const;
 VectorBuffer GetTileData(const IntVector2&) const;
 IntVector2 GetTileIndex(const Vector3&) const;
 bool HasSubscribedToEvent(Object, const String&);
@@ -6099,6 +6110,7 @@ bool Save(File, const String&) const;
 bool Save(VectorBuffer&) const;
 bool Save(const String&) const;
 void SendEvent(const String&, VariantMap& = VariantMap ( ));
+String ToString(const String& = String ( "\t" )) const;
 
 // Properties:
 /* readonly */
@@ -6137,13 +6149,13 @@ void Clear();
 bool Contains(const String&) const;
 void Erase(const String&);
 void Erase(uint, uint = 1);
-bool GetBool() const;
-double GetDouble() const;
-float GetFloat() const;
-int GetInt() const;
-uint GetUInt() const;
-Variant GetVariant() const;
-VariantMap GetVariantMap() const;
+bool GetBool(bool = false) const;
+double GetDouble(double = 0) const;
+float GetFloat(float = 0) const;
+int GetInt(int = 0) const;
+uint GetUInt(uint = 0) const;
+Variant GetVariant(Variant = Variant ( )) const;
+VariantMap GetVariantMap(VariantMap = VariantMap ( )) const;
 void Insert(uint, const JSONValue&);
 const JSONValue& Get(const String&) const;
 void Pop();
@@ -6152,7 +6164,7 @@ void Resize(uint);
 void Set(const String&, const JSONValue&);
 void SetVariant(const Variant&);
 void SetVariantMap(const VariantMap&);
-const String& GetString() const;
+const String& GetString(const String& = String ( )) const;
 
 // Properties:
 /* readonly */
@@ -6405,6 +6417,7 @@ void SetAttributeAnimationSpeed(const String&, float);
 void SetAttributeAnimationTime(const String&, float);
 void SetAttributeAnimationWrapMode(const String&, WrapMode);
 void SetDeepEnabled(bool);
+void SetDisabledOffset(int, int);
 void SetEnabledRecursive(bool);
 void SetFixedHeight(int);
 void SetFixedSize(int, int);
@@ -6461,6 +6474,7 @@ uint cursorPosition;
 XMLFile defaultStyle;
 /* readonly */
 float derivedOpacity;
+IntVector2 disabledOffset;
 /* readonly */
 uint dragButtonCombo;
 /* readonly */
@@ -6497,6 +6511,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 uint maxLength;
@@ -6829,8 +6844,9 @@ String GetLanguage(int);
 int GetLanguageIndex(const String&);
 bool HasSubscribedToEvent(Object, const String&);
 bool HasSubscribedToEvent(const String&);
-void LoadJSON(const JSONValue&);
-void LoadJSONFile(const String&);
+void LoadJSONFile(const String&, const String = String ( "" ) const);
+void LoadMultipleLanguageJSON(const JSONValue&);
+void LoadSingleLanguageJSON(const JSONValue&, const String& = String ( "" ) const);
 void Reset();
 void SendEvent(const String&, VariantMap& = VariantMap ( ));
 void SetLanguage(const String&);
@@ -7265,6 +7281,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -7688,7 +7705,7 @@ float GetDistanceToWall(const Vector3&, float, const Vector3& = Vector3 ( 1.0 , 
 bool GetInterceptNetworkUpdate(const String&) const;
 Vector3 GetRandomPoint();
 Vector3 GetRandomPointInCircle(const Vector3&, float, const Vector3& = Vector3 ( 1.0 , 1.0 , 1.0 ));
-BoundingBox GetTileBoudningBox(const IntVector2&) const;
+BoundingBox GetTileBoundingBox(const IntVector2&) const;
 VectorBuffer GetTileData(const IntVector2&) const;
 IntVector2 GetTileIndex(const Vector3&) const;
 bool HasSubscribedToEvent(Object, const String&);
@@ -7783,6 +7800,7 @@ class Network
 {
 public:
 // Methods:
+bool AttemptNATPunchtrough(const String&, Scene, const VariantMap& = VariantMap ( ));
 void BroadcastMessage(int, bool, bool, const VectorBuffer&, uint = 0);
 void BroadcastRemoteEvent(Node, const String&, bool, const VariantMap& = VariantMap ( ));
 void BroadcastRemoteEvent(Scene, const String&, bool, const VariantMap& = VariantMap ( ));
@@ -7790,13 +7808,18 @@ void BroadcastRemoteEvent(const String&, bool, const VariantMap& = VariantMap ( 
 bool CheckRemoteEvent(const String&) const;
 bool Connect(const String&, uint16, Scene, const VariantMap& = VariantMap ( ));
 void Disconnect(int = 0);
+bool DiscoverHosts(uint16);
 bool HasSubscribedToEvent(Object, const String&);
 bool HasSubscribedToEvent(const String&);
 HttpRequest MakeHttpRequest(const String&, const String& = String ( ), Array<String> = null, const String& = String ( ));
 void RegisterRemoteEvent(const String&) const;
 void SendEvent(const String&, VariantMap& = VariantMap ( ));
 void SendPackageToClients(Scene, PackageFile);
-bool StartServer(uint16);
+bool SetDiscoveryBeacon(const VariantMap& = VariantMap ( ));
+void SetNATServerInfo(const String&, uint16);
+bool SetPassword(const String&);
+void StartNATClient() const;
+bool StartServer(uint16, uint = 128);
 void StopServer();
 void UnregisterAllRemoteEvents();
 void UnregisterRemoteEvent(const String&) const;
@@ -7806,6 +7829,8 @@ void UnregisterRemoteEvent(const String&) const;
 String category;
 /* readonly */
 Array<Connection> clientConnections;
+/* readonly */
+String guid;
 String packageCacheDir;
 /* readonly */
 int refs;
@@ -7815,6 +7840,8 @@ Connection serverConnection;
 bool serverRunning;
 int simulatedLatency;
 float simulatedPacketLoss;
+/* readonly */
+String startNATClient;
 /* readonly */
 StringHash type;
 /* readonly */
@@ -11119,6 +11146,7 @@ void SetAttributeAnimationSpeed(const String&, float);
 void SetAttributeAnimationTime(const String&, float);
 void SetAttributeAnimationWrapMode(const String&, WrapMode);
 void SetDeepEnabled(bool);
+void SetDisabledOffset(int, int);
 void SetEnabledRecursive(bool);
 void SetFixedHeight(int);
 void SetFixedSize(int, int);
@@ -11170,6 +11198,7 @@ IntRect combinedScreenRect;
 XMLFile defaultStyle;
 /* readonly */
 float derivedOpacity;
+IntVector2 disabledOffset;
 /* readonly */
 uint dragButtonCombo;
 /* readonly */
@@ -11207,6 +11236,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -13999,6 +14029,7 @@ void RemoveChild(uint);
 void RemoveInstanceDefault();
 void RemoveObjectAnimation();
 bool RemoveTag(const String&);
+void Reset();
 void ResetDeepEnabled();
 void ResetToDefault();
 bool Save(File) const;
@@ -14036,6 +14067,7 @@ bool SetStyle(const XMLElement&);
 bool SetStyleAuto(XMLFile = null);
 void UpdateLayout();
 const Variant& GetVar(const StringHash&);
+void add_altTarget(UIElement);
 
 // Properties:
 bool animationEnabled;
@@ -15212,6 +15244,7 @@ void SetAttributeAnimationSpeed(const String&, float);
 void SetAttributeAnimationTime(const String&, float);
 void SetAttributeAnimationWrapMode(const String&, WrapMode);
 void SetDeepEnabled(bool);
+void SetDisabledOffset(int, int);
 void SetEnabledRecursive(bool);
 void SetFixedHeight(int);
 void SetFixedSize(int, int);
@@ -15269,6 +15302,7 @@ XMLFile defaultStyle;
 Texture2D depthTexture;
 /* readonly */
 float derivedOpacity;
+IntVector2 disabledOffset;
 /* readonly */
 uint dragButtonCombo;
 /* readonly */
@@ -15307,6 +15341,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -15503,6 +15538,7 @@ void SetAttributeAnimationSpeed(const String&, float);
 void SetAttributeAnimationTime(const String&, float);
 void SetAttributeAnimationWrapMode(const String&, WrapMode);
 void SetDeepEnabled(bool);
+void SetDisabledOffset(int, int);
 void SetEnabledRecursive(bool);
 void SetFixedHeight(int);
 void SetFixedSize(int, int);
@@ -15554,6 +15590,7 @@ IntRect combinedScreenRect;
 XMLFile defaultStyle;
 /* readonly */
 float derivedOpacity;
+IntVector2 disabledOffset;
 /* readonly */
 uint dragButtonCombo;
 /* readonly */
@@ -15591,6 +15628,7 @@ IntRect layoutBorder;
 Vector2 layoutFlexScale;
 LayoutMode layoutMode;
 int layoutSpacing;
+Material material;
 Vector2 maxAnchor;
 int maxHeight;
 IntVector2 maxOffset;
@@ -16168,6 +16206,9 @@ enum EmitterType
 {
 EMITTER_SPHERE,
 EMITTER_BOX,
+EMITTER_SPHEREVOLUME,
+EMITTER_CYLINDER,
+EMITTER_RING,
 };
 
 enum EmitterType2D

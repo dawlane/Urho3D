@@ -212,6 +212,7 @@ namespace Urho3D
 <a href="#Class_UI"><b>UI</b></a>
 <a href="#Class_UIComponent"><b>UIComponent</b></a>
 <a href="#Class_UIElement"><b>UIElement</b></a>
+<a href="#Class_UIElement3D"><b>UIElement3D</b></a>
 <a href="#Class_UISelectable"><b>UISelectable</b></a>
 <a href="#Class_ValueAnimation"><b>ValueAnimation</b></a>
 <a href="#Class_Variant"><b>Variant</b></a>
@@ -469,6 +470,7 @@ Methods:
 - void AddTime(float delta)
 - void SetLayer(char layer)
 - void SetBlendMode(AnimationBlendMode mode)
+- void Apply()
 - Animation* GetAnimation() const
 - Bone* GetStartBone() const
 - float GetBoneWeight(const String name) const
@@ -680,6 +682,8 @@ Methods:
 - void SetImageBorder(const IntRect& rect)
 - void SetHoverOffset(const IntVector2& offset)
 - void SetHoverOffset(int x, int y)
+- void SetDisabledOffset(const IntVector2& offset)
+- void SetDisabledOffset(int x, int y)
 - void SetBlendMode(BlendMode mode)
 - void SetTiled(bool enable)
 - Texture* GetTexture() const
@@ -687,16 +691,19 @@ Methods:
 - const IntRect& GetBorder() const
 - const IntRect& GetImageBorder() const
 - const IntVector2& GetHoverOffset() const
+- const IntVector2& GetDisabledOffset() const
 - BlendMode GetBlendMode() const
 - bool IsTiled() const
 
 Properties:
 
 - Texture* texture
+- Material* material
 - IntRect& imageRect
 - IntRect& border
 - IntRect& imageBorder
 - IntVector2& hoverOffset
+- IntVector2& disabledOffset
 - BlendMode blendMode
 - bool tiled
 
@@ -774,15 +781,12 @@ Methods:
 - void delete()
 - void SetPressedOffset(const IntVector2& offset)
 - void SetPressedOffset(int x, int y)
-- void SetDisabledOffset(const IntVector2& offset)
-- void SetDisabledOffset(int x, int y)
 - void SetPressedChildOffset(const IntVector2& offset)
 - void SetPressedChildOffset(int x, int y)
 - void SetRepeat(float delay, float rate)
 - void SetRepeatDelay(float delay)
 - void SetRepeatRate(float rate)
 - const IntVector2& GetPressedOffset() const
-- const IntVector2& GetDisabledOffset() const
 - const IntVector2& GetPressedChildOffset() const
 - float GetRepeatDelay() const
 - float GetRepeatRate() const
@@ -791,7 +795,6 @@ Methods:
 Properties:
 
 - IntVector2& pressedOffset
-- IntVector2& disabledOffset
 - IntVector2& pressedChildOffset
 - float repeatDelay
 - float repeatRate
@@ -1259,11 +1262,11 @@ Methods:
 - String GetAddress() const
 - short GetPort() const
 - float GetRoundTripTime() const
-- float GetLastHeardTime() const
+- unsigned GetLastHeardTime() const
 - float GetBytesInPerSec() const
 - float GetBytesOutPerSec() const
-- float GetPacketsInPerSec() const
-- float GetPacketsOutPerSec() const
+- int GetPacketsInPerSec() const
+- int GetPacketsOutPerSec() const
 - String ToString() const
 - unsigned GetNumDownloads() const
 - const String GetDownloadName() const
@@ -3116,6 +3119,7 @@ Methods:
 - JSONFile* new()
 - void delete()
 - bool FromString(const String source)
+- String ToString(const String indendation = "\t") const
 - const JSONValue& GetRoot() const
 - bool Save(const String fileName, const String indentation = "\t") const
 
@@ -3160,12 +3164,12 @@ Methods:
 - bool IsString() const
 - bool IsArray() const
 - bool IsObject() const
-- bool GetBool() const
-- int GetInt() const
-- unsigned GetUInt() const
-- float GetFloat() const
-- double GetDouble() const
-- const String GetString() const
+- bool GetBool(bool defaultValue = false) const
+- int GetInt(int defaultValue = 0) const
+- unsigned GetUInt(unsigned defaultValue = 0) const
+- float GetFloat(float defaultValue = 0) const
+- double GetDouble(double defaultValue = 0) const
+- const String GetString(const String defaultValue = String::EMPTY) const
 - const JSONArray& GetArray() const
 - const JSONObject& GetObject() const
 - Variant GetVariant() const
@@ -3424,8 +3428,10 @@ Methods:
 - void SetLanguage(int index)
 - String Get(const String id)
 - void Reset()
-- void LoadJSON(const JSONValue& source)
-- void LoadJSONFile(const String name)
+- void LoadMultipleLanguageJSON(const JSONValue& source)
+- void LoadSingleLanguageJSON(const JSONValue& source)
+- void LoadSingleLanguageJSON(const JSONValue& source, const String language)
+- void LoadJSONFile(const String name, const String language = String::EMPTY)
 
 Properties:
 
@@ -3962,7 +3968,7 @@ Methods:
 - void RemoveTile(const IntVector2& tile)
 - void RemoveAllTiles()
 - bool HasTile(const IntVector2& tile) const
-- BoundingBox GetTileBoudningBox(const IntVector2& tile) const
+- BoundingBox GetTileBoundingBox(const IntVector2& tile) const
 - IntVector2 GetTileIndex(const Vector3& position) const
 - void SetPartitionType(NavmeshPartitionType aType)
 - void SetDrawOffMeshConnections(bool enable)
@@ -4037,7 +4043,7 @@ Methods:
 - bool Connect(const String address, short port, Scene* scene)
 - bool Connect(const String address, short port, Scene* scene, const VariantMap& identity)
 - void Disconnect(int waitMSec = 0)
-- bool StartServer(short port)
+- bool StartServer(short port, int maxConnections = 128)
 - void StopServer()
 - void BroadcastMessage(int msgID, bool reliable, bool inOrder, const VectorBuffer& msg, unsigned contentID = 0)
 - void BroadcastRemoteEvent(StringHash eventType, bool inOrder)
@@ -4071,6 +4077,14 @@ Methods:
 - bool IsServerRunning() const
 - bool CheckRemoteEvent(StringHash eventType) const
 - const String GetPackageCacheDir() const
+- void StartNATClient()
+- const String GetGUID() const
+- void DiscoverHosts(unsigned port)
+- void SetPassword(const String password)
+- void SetDiscoveryBeacon(const VariantMap& data)
+- void SetNATServerInfo(const String address, short port)
+- void AttemptNATPunchtrough(const String guid, Scene* scene)
+- void AttemptNATPunchtrough(const String guid, Scene* scene, const VariantMap& identity)
 
 Properties:
 
@@ -7082,6 +7096,8 @@ Methods:
 - ToolTip() (GC)
 - ToolTip* new()
 - void delete()
+- void Reset()
+- void AddAltTarget(UIElement* target)
 - void SetDelay(float delay)
 - float GetDelay() const
 
@@ -7455,6 +7471,9 @@ Properties:
 - int indentWidth (readonly)
 - TraversalMode traversalMode
 - bool elementEventSender
+
+<a name="Class_UIElement3D"></a>
+### UIElement3D : UIElement
 
 <a name="Class_UISelectable"></a>
 ### UISelectable : UIElement
@@ -8343,6 +8362,9 @@ Properties:
 
 - int EMITTER_SPHERE
 - int EMITTER_BOX
+- int EMITTER_SPHEREVOLUME
+- int EMITTER_CYLINDER
+- int EMITTER_RING
 
 ### EmitterType2D
 
